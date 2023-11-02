@@ -11,18 +11,18 @@ import useMedia from '../../Hooks/useMedia';
 const FeedPhotos = ({ page, user, setInfinite, setModalPhoto}) => {
 
     const mobile = useMedia('(max-width: 40rem)');
-    const [total,setTotal] = React.useState(3)
     const {data, loading, error, request} = useFetch(); 
     React.useEffect(()=>{
         async function fetchPhotos(){
         if(mobile){
-            setTotal(4)
+            const total = 4;
             const {url , options} = PHOTOS_GET({page, total, user});
             const {response, json} = await request(url,options);
             if(response && response.ok && json.length < total) 
             setInfinite(false);
         }else{
-            setTotal(3)
+
+            const total = 3;
             const {url , options} = PHOTOS_GET({page, total, user});
             const {response, json} = await request(url,options);
             if(response && response.ok && json.length < total) 
@@ -30,7 +30,7 @@ const FeedPhotos = ({ page, user, setInfinite, setModalPhoto}) => {
         } 
         }
         fetchPhotos();
-    },[request, user, page, setInfinite])
+    },[request, user, page, setInfinite,mobile])
 
 
 
