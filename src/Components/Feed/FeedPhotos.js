@@ -17,13 +17,17 @@ const FeedPhotos = ({ page, user, setInfinite, setModalPhoto}) => {
         async function fetchPhotos(){
         if(mobile){
             setTotal(4)
+            const {url , options} = PHOTOS_GET({page, total, user});
+            const {response, json} = await request(url,options);
+            if(response && response.ok && json.length < total) 
+            setInfinite(false);
         }else{
             setTotal(3)
-        }
-        const {url , options} = PHOTOS_GET({page, total, user});
-        const {response, json} = await request(url,options);
-        if(response && response.ok && json.length < total) 
-        setInfinite(false);
+            const {url , options} = PHOTOS_GET({page, total, user});
+            const {response, json} = await request(url,options);
+            if(response && response.ok && json.length < total) 
+            setInfinite(false);
+        } 
         }
         fetchPhotos();
     },[request, user, page, setInfinite])
