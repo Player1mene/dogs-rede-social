@@ -5,14 +5,21 @@ import { PHOTOS_GET } from '../../api';
 import Loading from '../Helper/Loading';
 import Error from '../Helper/Error';
 import styles from './FeedPhotos.module.css'
+import useMedia from '../../Hooks/useMedia';
+
 
 const FeedPhotos = ({ page, user, setInfinite, setModalPhoto}) => {
 
+    const mobile = useMedia('(max-width: 40rem)');
+    const [total,setTotal] = React.useState(3)
     const {data, loading, error, request} = useFetch(); 
-
     React.useEffect(()=>{
         async function fetchPhotos(){
-        const total = 3
+        if(mobile){
+            setTotal(4)
+        }else{
+            setTotal(3)
+        }
         const {url , options} = PHOTOS_GET({page, total, user});
         const {response, json} = await request(url,options);
         if(response && response.ok && json.length < total) 
